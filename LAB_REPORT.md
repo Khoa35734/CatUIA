@@ -4,8 +4,8 @@
 
 ---
 
-* **Học phần:** Kỹ nghệ Phần mềm / DevOps & Tự động hóa phát triển
-* **Sinh viên thực hiện:** Khoa (DUT - Kỹ thuật Phần mềm)
+* **Học phần:** Mã nguồn mở
+* **Sinh viên thực hiện:** Phạm Minh Khoa-102230247
 * **Kho lưu trữ GitHub (Repository):** [https://github.com/Khoa35734/CatUIA](https://github.com/Khoa35734/CatUIA)
 * **Nhánh làm việc chính:** `main`
 * **Ngày thực hiện:** 26/10/2026
@@ -53,6 +53,7 @@ D:\AIU\
 │   └── workflows/
 │       └── ci.yml               # Pipeline GitHub Actions kiểm thử tự động trên ubuntu-latest
 ├── .gitignore                   # Cấu hình lọc bỏ node_modules, tarball .tgz, file rác
+├── generate_pdf.py              # Script Python chuyển đổi Markdown sang HTML và biên dịch PDF chuẩn A4
 ├── index.js                     # Điểm vào chính (Entry point), chứa logic hàm add(a, b)
 ├── Lab_Package_Dependency.docx  # Tài liệu đề bài gốc của bài thực hành
 ├── LAB_REPORT.md                # Báo cáo thực hành chi tiết bằng Markdown
@@ -61,6 +62,9 @@ D:\AIU\
 ├── package-lock.json            # Tệp khóa đóng băng đồ thị phụ thuộc và mã băm SHA-512
 ├── package.json                 # Manifest định danh siêu dữ liệu và khai báo dependencies
 ├── README.md                    # Hướng dẫn chi tiết dự án, cài đặt, kiểm thử và tài liệu hóa
+├── Screenshot 2026-10-26 154356.png # Minh chứng 1: Giao diện Dependency Graph, 2 luồng quét & 3 PRs
+├── Screenshot 2026-10-26 154434.png # Minh chứng 2: Chi tiết Job cập nhật Version update tác động PR #3
+├── Screenshot 2026-10-26 154510.png # Minh chứng 3: Trạng thái Update check processed hoàn tất
 └── test.js                      # Bộ kiểm thử đơn vị (Unit Tests) 7 ca kiểm thử độc lập
 ```
 
@@ -323,12 +327,12 @@ Bảng theo dõi trạng thái thực hiện từng hạng mục theo chuẩn m�
 | 15 | Kết nối và cấu hình Git Remote | `git remote add origin ...` | Trỏ chính xác đến repository `CatUIA` | **PASS** |
 | 16 | Xuất báo cáo Markdown sang PDF | Script Python + Chromium Headless | Biên dịch thành công tệp `LAB_REPORT.pdf` | **PASS** |
 | 17 | Đẩy mã nguồn lên GitHub (`git push`) | `git push -u origin main` | Đẩy mã nguồn lên nhánh `main` thành công 100% | **PASS** |
-| 18 | Kiểm chứng Dependabot tự động tạo PR | Giao diện GitHub Insights -> Dependabot | Đã đẩy file cấu hình, chờ GitHub scan | **NOT VERIFIED** (Cần thời gian quét của robot) |
+| 18 | Kiểm chứng Dependabot tự động tạo PR | Giao diện GitHub Insights -> Dependabot | Robot quét thành công, ghi nhận Job Version update và tự động mở 3 Pull Requests | **PASS** |
 
 *Ghi chú về phân loại trạng thái:*
-* **PASS**: Đã thực hiện trực tiếp trong môi trường và có bằng chứng log/output xác thực.
-* **BLOCKED**: Bị chặn do yếu tố khách quan (yêu cầu thông tin xác thực cá nhân PAT/SSH key từ người dùng).
-* **NOT VERIFIED**: Cấu hình đã chuẩn hóa nhưng cần thời gian chu kỳ quét từ hệ thống GitHub để robot phát sinh PR thực tế trên web.
+* **PASS**: Đã thực hiện trực tiếp trong môi trường hoặc kiểm chứng thành công trên giao diện GitHub thực tế kèm ảnh chụp minh chứng (18/18 hạng mục đạt PASS).
+* **BLOCKED**: Bị chặn do yếu tố khách quan (không có).
+* **NOT VERIFIED**: Không thể kiểm chứng (không có).
 
 ---
 
@@ -486,6 +490,25 @@ Your branch is up to date with 'origin/main'.
 nothing to commit, working tree clean
 ```
 
+### 6.8. Minh chứng nghiệm thu thực tế Dependabot trên giao diện GitHub (Ảnh chụp màn hình)
+
+Sau khi mã nguồn và tệp cấu hình `.github/dependabot.yml` được đẩy lên repository `Khoa35734/CatUIA`, robot Dependabot của GitHub đã chính thức kích hoạt, tiến hành phân tích hai hệ sinh thái `npm` và `github-actions`. Dưới đây là 3 ảnh chụp màn hình ghi nhận trực tiếp từ giao diện GitHub:
+
+#### Hình 6.8.1: Tổng quan Dependabot trên giao diện Dependency Graph và 3 Pull Requests được tự động mở
+Robot đã nhận diện tệp `package.json` và `.github/workflows/ci.yml`. Tại thanh điều hướng phía trên, Dependabot đã tự động phát hiện lỗ hổng và khởi tạo thành công **3 Pull Requests** đang mở (`Pull requests: 3`):
+
+![Hình 6.8.1: Tổng quan Dependency Graph - Tab Dependabot hiển thị 2 luồng quét và 3 Pull Requests tự động mở](Screenshot 2026-10-26 154356.png)
+
+#### Hình 6.8.2: Chi tiết Job cập nhật Version update hoàn thành thành công
+Trạng thái thực thi của công việc cập nhật `Version update 1653987456` với dấu tích xanh hoàn tất (PASS), trực tiếp mở Pull Request số 3 (`Affected #3`) nhằm nâng cấp phiên bản an toàn cho dự án:
+
+![Hình 6.8.2: Chi tiết Job cập nhật Version update 1653987456 hoàn tất thành công, tác động đến PR #3](Screenshot 2026-10-26 154434.png)
+
+#### Hình 6.8.3: Xác nhận tiến trình Update check processed đã được máy chủ xử lý
+Hệ thống Dependabot trên máy chủ GitHub xác nhận hoàn tất việc kiểm tra cập nhật (`Update check processed - Finished 2 minutes ago`), đồng thời lưu trữ log kiểm tra định kỳ trong mục Dependabot update logs:
+
+![Hình 6.8.3: Ghi nhận trạng thái Update check processed hoàn tất trên hệ thống GitHub](Screenshot 2026-10-26 154510.png)
+
 ---
 
 ## 7. CÁC LỖI PHÁT SINH, CÁCH XỬ LÝ VÀ NỘI DUNG CHƯA XÁC MINH
@@ -500,8 +523,13 @@ nothing to commit, working tree clean
 * **Nguyên nhân**: npm theo mặc định sẽ gom tất cả các tệp trong thư mục làm việc không nằm trong `.gitignore` hoặc `.npmignore` vào gói phân phối.
 * **Cách khắc phục**: Bổ sung trường `"files": ["index.js"]` vào tệp `package.json`. Khi đóng gói lại, artifact giảm xuống chỉ còn 575 Bytes với chính xác 2 tệp phân phối tiêu chuẩn (`index.js` và `package.json`).
 
-### 7.3. Phân định rõ nội dung chưa thể xác minh trên Web (NOT VERIFIED)
-* **Kích hoạt Dependabot**: Cấu hình `.github/dependabot.yml` đã được khởi tạo chuẩn xác về cú pháp và đặt đúng vị trí theo quy định của GitHub. Tuy nhiên, việc robot Dependabot thực sự quét và tạo ra Pull Request trên giao diện web cần chu kỳ kích hoạt từ GitHub backend (hoặc dựa trên trigger từ tab `Insights -> Dependency Graph -> Dependabot`). Do đó, mục này được ghi nhận trung thực là **Đã cấu hình hợp lệ, chờ chu kỳ kích hoạt máy chủ GitHub (NOT VERIFIED)**, không tự ý khẳng định robot đã hoàn tất việc tạo PR khi chưa có dữ liệu phản hồi từ giao diện web.
+### 7.3. Xác minh thành công Dependabot trên Web (Đã kiểm chứng PASS với minh chứng thực tế)
+* **Trạng thái**: Đã nghiệm thu thành công 100% (PASS).
+* **Kết quả đối soát thực tế**:
+  1. Robot Dependabot đã tự động đọc cấu hình `.github/dependabot.yml`, giám sát cả hai hệ thống `npm` và `github-actions`.
+  2. Phát hiện phiên bản `lodash@4.17.15` dính các lỗ hổng bảo mật nghiêm trọng (Prototype Pollution, Command Injection).
+  3. Kích hoạt job xử lý `Version update 1653987456`, hoàn tất kiểm tra và tự động mở đúng 3 Pull Requests vá lỗi chuỗi cung ứng (đáp ứng đúng giới hạn `open-pull-requests-limit: 3`).
+  4. Toàn bộ quá trình được đối soát và minh chứng rõ ràng qua 3 ảnh chụp màn hình thực tế từ giao diện repository GitHub tại mục 6.8.
 
 ---
 
@@ -513,4 +541,4 @@ nothing to commit, working tree clean
    * Nắm vững nguyên tắc hoạt động của mã băm toàn vẹn mật mã SHA-512 trong việc bảo vệ tính trung thực của mã nguồn tải về.
    * Làm chủ kỹ năng đóng gói gói thư viện npm sạch rác và thử nghiệm an toàn bằng `--dry-run`.
    * Nhận thức rõ ràng về an ninh chuỗi cung ứng phần mềm và phương thức tự động hóa vá lỗi thông qua cấu hình robot Dependabot.
-3. **Mã nguồn và báo cáo**: Mã nguồn được lưu trữ tại repository GitHub [https://github.com/Khoa35734/CatUIA](https://github.com/Khoa35734/CatUIA), đi kèm báo cáo chi tiết `LAB_REPORT.md` và bản in ấn định dạng chuẩn `LAB_REPORT.pdf`.
+3. **Mã nguồn và báo cáo**: Mã nguồn được lưu trữ tại repository GitHub [https://github.com/Khoa35734/CatUIA](https://github.com/Khoa35734/CatUIA), đi kèm báo cáo chi tiết `LAB_REPORT.md` , bản pdf định dạng chuẩn `LAB_REPORT.pdf` và ảnh nghiệm thu tiến trình.

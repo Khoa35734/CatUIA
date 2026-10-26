@@ -134,6 +134,20 @@ def markdown_to_html(md_text):
             html_lines.append(f'<li>{item_text}</li>')
             continue
 
+        # Image block: ![alt](src)
+        img_match = re.match(r'^!\[([^\]]*)\]\(([^)]+)\)$', stripped)
+        if img_match:
+            html_lines.extend(close_lists())
+            alt = img_match.group(1)
+            raw_src = img_match.group(2).strip('<>').strip()
+            if os.path.exists(raw_src):
+                abs_img_path = os.path.abspath(raw_src).replace('\\', '/')
+                img_src = f"file:///{abs_img_path}"
+            else:
+                img_src = raw_src
+            html_lines.append(f'<div class="img-container"><img src="{img_src}" alt="{html.escape(alt)}" /><div class="img-caption">{html.escape(alt)}</div></div>')
+            continue
+
         # Ordered list
         ol_match = re.match(r'^\d+\.\s+(.*)$', stripped)
         if ol_match:
@@ -310,6 +324,26 @@ def build_full_html(body_content):
   }}
   a:hover {{
     text-decoration: underline;
+  }}
+  .img-container {{
+    text-align: center;
+    margin: 16px 0 18px 0;
+    page-break-inside: avoid;
+  }}
+  .img-container img {{
+    max-width: 95%;
+    max-height: 480px;
+    object-fit: contain;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  }}
+  .img-caption {{
+    font-size: 8.5pt;
+    color: #475569;
+    margin-top: 6px;
+    font-style: italic;
+    font-weight: 500;
   }}
 </style>
 </head>
