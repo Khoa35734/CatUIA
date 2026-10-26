@@ -1,0 +1,30 @@
+{
+  "name": "dut-core-math-utils",
+  "version": "1.0.0",
+  "description": "Thư viện tối ưu hóa các phép toán đại số cho sinh viên kỹ nghệ phần mềm.",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khoa35734/CatUIA.git"
+  },
+  "keywords": [
+    "math",
+    "algebra",
+    "dut",
+    "se"
+  ],
+  "author": "DUT Student",
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}

@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Cấu hình tự động gác cổng, nâng cấp cho các gói thư viện npm
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 3
+    labels:
+      - "security-patch"
+
+  # Cấu hình tự động cập nhật định kỳ cho GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
