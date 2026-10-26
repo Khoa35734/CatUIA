@@ -322,7 +322,7 @@ Bảng theo dõi trạng thái thực hiện từng hạng mục theo chuẩn m�
 | 14 | Quản lý tệp loại trừ | Tạo `.gitignore` | Bỏ qua `node_modules`, `*.tgz`, file tạm | **PASS** |
 | 15 | Kết nối và cấu hình Git Remote | `git remote add origin ...` | Trỏ chính xác đến repository `CatUIA` | **PASS** |
 | 16 | Xuất báo cáo Markdown sang PDF | Script Python + Chromium Headless | Biên dịch thành công tệp `LAB_REPORT.pdf` | **PASS** |
-| 17 | Đẩy mã nguồn lên GitHub (`git push`) | `git push -u origin main` | Đẩy mã nguồn lên kho lưu trữ từ xa | **PASS / BLOCKED** (Tùy thuộc quyền xác thực Git) |
+| 17 | Đẩy mã nguồn lên GitHub (`git push`) | `git push -u origin main` | Đẩy mã nguồn lên nhánh `main` thành công 100% | **PASS** |
 | 18 | Kiểm chứng Dependabot tự động tạo PR | Giao diện GitHub Insights -> Dependabot | Đã đẩy file cấu hình, chờ GitHub scan | **NOT VERIFIED** (Cần thời gian quét của robot) |
 
 *Ghi chú về phân loại trạng thái:*
@@ -466,6 +466,24 @@ npm notice total files: 2
 npm warn publish This command requires you to be logged in to https://registry.npmjs.org/ (dry-run)
 npm notice Publishing to https://registry.npmjs.org/ with tag latest and default access (dry-run)
 + dut-core-math-utils@1.0.0
+```
+
+### 6.7. Log kết nối và đẩy mã nguồn lên GitHub (`git remote` & `git push`)
+```text
+PS D:\AIU> git remote -v
+origin  https://github.com/Khoa35734/CatUIA.git (fetch)
+origin  https://github.com/Khoa35734/CatUIA.git (push)
+
+PS D:\AIU> git branch -M main
+PS D:\AIU> git push -u origin main
+To https://github.com/Khoa35734/CatUIA.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.
+
+PS D:\AIU> git status
+On branch main
+Your branch is up to date with 'origin/main'.
+nothing to commit, working tree clean
 ```
 
 ---
